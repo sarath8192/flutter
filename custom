@@ -1,0 +1,43 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Custom Widgets Example'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CustomTitleText("Welcome to Flutter"),
+
+              SizedBox(height: 20),
+
+              InfoCard(
+                title: "Username",
+                value: "Sarath",
+              ),
+
+              SizedBox(height: 20),
+
+              CustomButton(
+                text: "Click Me",
+                onPressed: () {
+                  print("Button pressed!");
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
