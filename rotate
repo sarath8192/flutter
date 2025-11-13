@@ -1,0 +1,64 @@
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: RotateExample(),
+    );
+  }
+}
+
+class RotateExample extends StatefulWidget {
+  @override
+  _RotateExampleState createState() => _RotateExampleState();
+}
+
+class _RotateExampleState extends State<RotateExample>
+    with SingleTickerProviderStateMixin {
+
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      duration: Duration(seconds: 3),
+      vsync: this,
+    )..repeat(); // rotates continuously
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Rotate Animation")),
+      body: Center(
+        child: RotationTransition(
+          turns: _controller,
+          child: Container(
+            width: 120,
+            height: 120,
+            color: Colors.blue,
+            child: Center(
+              child: Text(
+                "Rotate",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
