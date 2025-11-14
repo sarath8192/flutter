@@ -1,0 +1,106 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'counter_provider.dart';
+
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => CounterProvider(),
+      child: MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'State Management Demo',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final providerCounter = Provider.of<CounterProvider>(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("State Management"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            // Using setState
+            SetStateCounter(),
+            Divider(thickness: 2, height: 40),
+
+            // Using Provider
+            Text(
+              'Provider Counter: ${providerCounter.count}',
+              style: TextStyle(fontSize: 24, color: Colors.green),
+            ),
+
+
+            ElevatedButton(
+              onPressed: () => providerCounter.increment(),
+              child: Text("Increment with Provider"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+import 'package:flutter/material.dart';
+
+class SetStateCounter extends StatefulWidget {
+  @override
+  _SetStateCounterState createState() => _SetStateCounterState();
+}
+
+class _SetStateCounterState extends State<SetStateCounter> {
+  int count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          "setState Counter: $count",
+          style: TextStyle(fontSize: 24, color: Colors.blue),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              count++;
+            });
+          },
+          child: Text("Increment with setState"),
+        ),
+      ],
+    );
+  }
+}
+import 'package:flutter/material.dart';
+
+class CounterProvider extends ChangeNotifier {
+  int _count = 0;
+
+  int get count => _count;
+
+  void increment() {
+    _count++;
+    notifyListeners(); // updates UI
+  }
+}
+dependencies:
+  flutter:
+    sdk: flutter
+
+  provider: ^6.1.1  
+  cupertino_icons: ^1.0.8
