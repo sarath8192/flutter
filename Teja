@@ -1,0 +1,100 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'counter_provider.dart';
+
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => CounterProvider(),
+      child: const MyApp(),
+    ),
+  );
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      title: 'State Management Demo',
+      home: HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Read provider (rebuilds when provider notifies)
+    final providerCounter = Provider.of<CounterProvider>(context);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text('State Management')),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Widget that uses setState internally
+            const SetStateCounter(),
+
+            const Divider(thickness: 2, height: 40),
+
+            // Using Provider
+            Text(
+              'Provider Counter: ${providerCounter.count}',
+              style: const TextStyle(fontSize: 24, color: Colors.green),
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: providerCounter.increment,
+              child: const Text('Increment with Provider'),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              '(The first counter above uses setState; the one above uses Provider)',
+              style: TextStyle(fontSize: 12),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Counter using setState
+class SetStateCounter extends StatefulWidget {
+  const SetStateCounter({super.key});
+
+  @override
+  _SetStateCounterState createState() => _SetStateCounterState();
+}
+
+class _SetStateCounterState extends State<SetStateCounter> {
+  int count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'setState Counter: $count',
+          style: const TextStyle(fontSize: 24, color: Colors.blue),
+        ),
+        const SizedBox(height: 8),
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              count++;
+            });
+          },
+          child: const Text('Increment with setState'),
+        ),
+      ],
+    );
+  }
+}
